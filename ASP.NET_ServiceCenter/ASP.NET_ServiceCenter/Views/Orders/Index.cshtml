@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ASP.NET_ServiceCenter.Models.Orders>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <br /><br />
+        <h1>Orders</h1><br />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.product_id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.user_id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.client_id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.date_start)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.date_end)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.price)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.product_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.user_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.client_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date_start)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date_end)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.price)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("Create", "Orders") + "'");">Create</button>
+    </main>
+</div>

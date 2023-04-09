@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ASP.NET_ServiceCenter.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <link rel="icon" href="images/favicon.png" type="image/gif" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Service Center</title>
+
+    <!-- slider -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <!-- fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+    <!-- scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+
+<body>
+    <!-- header section strats -->
+    <div class="hero_area" id="top">
+        <header class="header_section">
+            <div class="header_top">
+                <div class="container-fluid">
+                    <div class="top_nav_container">
+                        <a class="navbar-brand d-none d-lg-flex" asp-area="" asp-controller="Home" asp-action="Index">
+                            <span>
+                                Ivanov Service Center
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="header_bottom">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg custom_nav-container ">
+                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Master") || await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+                                    {
+                                        <li class="nav-item active">
+                                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="JQueryAjax">Orders</a>
+                                        </li>
+                                    }
+                                }
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">Administration</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            <partial name="_LoginPartial" />
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        @RenderBody()
+    </div>
+</body>
+</html>

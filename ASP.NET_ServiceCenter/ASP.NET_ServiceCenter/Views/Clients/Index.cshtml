@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ASP.NET_ServiceCenter.Models.Clients>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <br /><br />
+        <h1>Clients</h1><br />
+
+        @using (Html.BeginForm("Index", "Clients", FormMethod.Get))
+        {
+            @Html.TextBox("search")
+            <input type="submit" value="Search" />
+        }
+
+        <br /><br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.passport)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.birthdate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.passport)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.birthdate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("Create", "Clients") + "'");">Create</button>
+    </main>
+</div>

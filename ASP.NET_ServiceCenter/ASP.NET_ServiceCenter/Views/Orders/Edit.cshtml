@@ -1,0 +1,69 @@
+﻿@model ASP.NET_ServiceCenter.Models.Orders
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <br /><br />
+        <h1>Edit</h1>
+
+        <h4>Orders</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="id" />
+                    <div class="form-group">
+                        <label asp-for="product_id" class="control-label"></label>
+                        <input asp-for="product_id" class="form-control" />
+                        <span asp-validation-for="product_id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="user_id" class="control-label"></label>
+                        <input asp-for="user_id" class="form-control" />
+                        <span asp-validation-for="user_id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="user_name" class="control-label"></label>
+                        <input asp-for="user_name" class="form-control" />
+                        <span asp-validation-for="user_name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="client_id" class="control-label"></label>
+                        <input asp-for="client_id" class="form-control" />
+                        <span asp-validation-for="client_id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="date_start" class="control-label"></label>
+                        <input asp-for="date_start" class="form-control" />
+                        <span asp-validation-for="date_start" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="date_end" class="control-label"></label>
+                        <input asp-for="date_end" class="form-control" />
+                        <span asp-validation-for="date_end" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="price" class="control-label"></label>
+                        <input asp-for="price" class="form-control" />
+                        <span asp-validation-for="price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="JQueryAjax">Back to List</a>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

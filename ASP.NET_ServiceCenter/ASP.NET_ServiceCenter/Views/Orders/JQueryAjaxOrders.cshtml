@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ASP.NET_ServiceCenter.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model ASP.NET_ServiceCenter.ViewModels.OrdersViewModel
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <br /><br />
+        <h2>Orders</h2>
+
+        <form action="" method="post">
+            <div class="form-group col-2 p-0">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+                    {
+                        @Html.DropDownListFor(m => m.Masters, new SelectList(Model.Masters, "UserName", "UserName"), "Select master", new { @class = "form-control" })
+                        <br />
+                        <h5>Total amount:</h5>
+                        <input class="form-control" id="totalAmount" type="text" readonly="readonly" />
+                    }
+                }
+            </div>
+
+            <script type="text/javascript">
+
+        //передача JSON при помощи JQuery по методу POST
+        $('#Masters').change(function (e) {
+
+            // получить значение выпадающего списка при помощи JQuery
+            var cr = $('#Masters').val();
+            let sum = 0;
+
+            // подача Ajax-запроса на сервер при помощи JQuery
+            $.ajax({
+                url: '@Url.Action("OrdersListJson", "Orders")',
+                method: "POST",
+                data: JSON.stringify({
+                    master: cr
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                cache: false,
+                processData: true,
+                success: function (data) {
+                    console.log(data);
+
+                    // получить ссылку на таблицу с результатами
+                    var table = $('#ordersTable');
+
+                    // удалить все старые строки
+                    table.find("tbody tr").remove();
+
+                    // перебрать коллекцию в Json и создать новые строки таблицы на их основе
+                    data.forEach(function (orders) {
+                        table.append("<tr><td>" + orders.product_id + "</td><td>" + orders.user_id + "</td><td>" + orders.user_name + "</td><td>" + orders.client_id + "</td><td>" + orders.date_start + "</td><td>" + orders.date_end + "</td><td>" + orders.price + "</td></tr>");
+                    });
+
+                    //показать общую сумму по выбранному мастеру
+                    data.forEach(function (orders) {
+                        sum += orders.price;
+                        $('#totalAmount').val(sum)
+                    });
+                }
+            })
+        });
+            </script>
+        </form>
+        <br />
+
+        <div id="results" class="form-group">
+            <table id="ordersTable" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>product_id</th>
+                        <th>user_id</th>
+                        <th>user_name</th>
+                        <th>client_id</th>
+                        <th>date_start</th>
+                        <th>date_end</th>
+                        <th>price</th>
+                        <th>options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <td>@order.product_id</td>
+                            <td>@order.user_id</td>
+                            <td>@order.user_name</td>
+                            <td>@order.client_id</td>
+                            <td>@order.date_start</td>
+                            <td>@order.date_end</td>
+                            <td>@order.price</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@order.id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@order.id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@order.id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    </main>
+</div>
